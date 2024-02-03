@@ -1,4 +1,4 @@
-package main
+package cplib
 
 type DSU struct {
 	n            int

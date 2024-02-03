@@ -1,4 +1,4 @@
-package main
+package cplib
 
 /*
 // 区間和

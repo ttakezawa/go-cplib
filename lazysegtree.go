@@ -1,4 +1,4 @@
-package main
+package cplib
 
 /*
 // SEE: https://betrue12.hateblo.jp/entry/2020/09/23/005940

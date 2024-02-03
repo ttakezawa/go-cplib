@@ -1,4 +1,4 @@
-package main
+package cplib
 
 func NewMaxFlow(n int) *MaxFlow {
 	return &MaxFlow{

@@ -1,4 +1,4 @@
-package main
+package cplib
 
 type DynamicDSU[S comparable] struct {
 	_parent map[S]S

@@ -1,4 +1,4 @@
-package main
+package cplib
 
 type SCCGraph struct {
 	n     int

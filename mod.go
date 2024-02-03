@@ -1,4 +1,4 @@
-package main
+package cplib
 
 // const Mod = int(1e9) + 7
 const Mod = 998244353
