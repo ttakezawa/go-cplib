@@ -8,19 +8,8 @@ type (
 		pos [][2]int
 		g   [][]_MCFEdge
 	}
-	_MCFEdge struct {
-		to   int
-		rev  int
-		capa int
-		cost int
-	}
-	MCFEdge struct {
-		From int
-		To   int
-		Capa int
-		Flow int
-		Cost int
-	}
+	MCFEdge  struct{ From, To, Capa, Flow, Cost int }
+	_MCFEdge struct{ to, rev, capa, cost int }
 )
 
 func NewMinCostFlow(n int) *MinCostFlow {
@@ -147,11 +136,7 @@ func (mcf *MinCostFlow) _min(a, b int) int {
 }
 
 type (
-	MCFItem struct {
-		value    int
-		priority int
-		index    int
-	}
+	MCFItem  struct{ value, priority, index int }
 	MCFHeapq []*MCFItem
 )
 
