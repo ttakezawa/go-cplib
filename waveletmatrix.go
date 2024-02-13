@@ -167,7 +167,15 @@ type CompressedWaveletMatrix struct {
 
 func NewCompressedWaveletMatrix(vals []int) *CompressedWaveletMatrix {
 	cwm := &CompressedWaveletMatrix{}
-	cwm.vals = sorted(removeDuplicate(vals))
+	cwm.vals = make([]int, 0, len(vals))
+	seen := make(map[int]bool)
+	for _, val := range vals {
+		if !seen[val] {
+			seen[val] = true
+			cwm.vals = append(cwm.vals, val)
+		}
+	}
+	sort.Ints(cwm.vals)
 	cwm.comp = make(map[int]int)
 	for idx, val := range cwm.vals {
 		cwm.comp[val] = idx
@@ -178,25 +186,6 @@ func NewCompressedWaveletMatrix(vals []int) *CompressedWaveletMatrix {
 	}
 	cwm.wm = NewWaveletMatrix(newVals, bits.Len(uint(len(cwm.vals))))
 	return cwm
-}
-
-func removeDuplicate(vals []int) []int {
-	m := make(map[int]bool)
-	res := make([]int, 0, len(vals))
-	for _, val := range vals {
-		if !m[val] {
-			m[val] = true
-			res = append(res, val)
-		}
-	}
-	return res
-}
-
-func sorted(vals []int) []int {
-	res := make([]int, len(vals))
-	copy(res, vals)
-	sort.Ints(res)
-	return res
 }
 
 func (cwm *CompressedWaveletMatrix) Access(i int) int {
