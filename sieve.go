@@ -1,5 +1,6 @@
-// Verify https://atcoder.jp/contests/abc177/tasks/abc177_e
 package cplib
+
+// Verify https://atcoder.jp/contests/abc177/tasks/abc177_e
 
 import (
 	"sort"

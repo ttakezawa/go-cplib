@@ -1,6 +1,7 @@
+package cplib
+
 // Originated from https://qiita.com/Kiri8128/items/eca965fe86ea5f4cbb98
 // Verify https://algo-method.com/tasks/553
-package cplib
 
 import (
 	"math/bits"
