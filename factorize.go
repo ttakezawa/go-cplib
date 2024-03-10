@@ -3,7 +3,6 @@
 package cplib
 
 import (
-	"math/big"
 	"math/bits"
 	"sort"
 )
@@ -99,25 +98,26 @@ func is_prime(n int) bool {
 
 // b^e mod m O(log e)
 func powmod(b, e, m int) int {
-	// b**e % m
-	bb, ee, mm := big.NewInt(int64(b)), big.NewInt(int64(e)), big.NewInt(int64(m))
-	ret := int(new(big.Int).Exp(bb, ee, mm).Int64())
-	return ret
+	if e == 0 {
+		return 1
+	}
+	t := powmod(b, e/2, m)
+	t = int(NewUint128(uint64(t)).Mul64(uint64(t)).Mod64(uint64(m)))
+	if e%2 == 1 {
+		t = int(NewUint128(uint64(t)).Mul64(uint64(b)).Mod64(uint64(m)))
+	}
+	return t
 }
 
 func find_factor_rho(n int) int {
 	m := 1 << (bits.Len(uint(n)) / 8)
 	for c := 1; c < 99; c++ {
 		f := func(x int) int {
-			// return (x*x + c) % n
-			ret := new(big.Int)
-			ret.Mul(big.NewInt(int64(x)), big.NewInt(int64(x)))
-			ret.Add(ret, big.NewInt(int64(c)))
-			ret.Mod(ret, big.NewInt(int64(n)))
-			return int(ret.Int64())
+			// x*x+c mod n
+			return int(NewUint128(uint64(x)).Mul64(uint64(x)).Add64(uint64(c)).Mod64(uint64(n)))
 		}
-		var y, r, q, g int = 2, 1, 1, 1
-		var x, ys int = 0, 0
+		y, r, q, g := 2, 1, 1, 1
+		x, ys := 0, 0
 		for g == 1 {
 			x = y
 			for i := 0; i < r; i++ {
@@ -129,9 +129,9 @@ func find_factor_rho(n int) int {
 				for i := 0; i < min(m, r-k); i++ {
 					y = f(y)
 					// q = q * abs(x-y) % n
-					ret := new(big.Int)
-					ret.Mul(big.NewInt(int64(q)), big.NewInt(int64(abs(x-y))))
-					q = int(ret.Mod(ret, big.NewInt(int64(n))).Int64())
+					ret := NewUint128(uint64(q))
+					ret = ret.Mul64(uint64(abs(x - y)))
+					q = int(ret.Mod64(uint64(n)))
 				}
 				g = gcd(q, n)
 				k += m
@@ -183,4 +183,46 @@ func gcd(xs ...int) int {
 		g = gcd(g, x)
 	}
 	return g
+}
+
+type Uint128 struct {
+	Lo, Hi uint64
+}
+
+func NewUint128(v uint64) Uint128 {
+	return Uint128{v, 0}
+}
+
+func (u Uint128) Add64(v uint64) Uint128 {
+	lo, carry := bits.Add64(u.Lo, v, 0)
+	hi, carry := bits.Add64(u.Hi, 0, carry)
+	if carry != 0 {
+		panic("overflow")
+	}
+	return Uint128{lo, hi}
+}
+
+func (u Uint128) Mul64(v uint64) Uint128 {
+	hi, lo := bits.Mul64(u.Lo, v)
+	p0, p1 := bits.Mul64(u.Hi, v)
+	hi, c0 := bits.Add64(hi, p1, 0)
+	if p0 != 0 || c0 != 0 {
+		panic("overflow")
+	}
+	return Uint128{lo, hi}
+}
+
+func (u Uint128) QuoRem64(v uint64) (q Uint128, r uint64) {
+	if u.Hi < v {
+		q.Lo, r = bits.Div64(u.Hi, u.Lo, v)
+	} else {
+		q.Hi, r = bits.Div64(0, u.Hi, v)
+		q.Lo, r = bits.Div64(r, u.Lo, v)
+	}
+	return
+}
+
+func (u Uint128) Mod64(v uint64) (r uint64) {
+	_, r = u.QuoRem64(v)
+	return
 }
