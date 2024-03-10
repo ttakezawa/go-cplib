@@ -1,5 +1,6 @@
 package cplib
 
+// 最大公約数 𝑂(log min(𝑎,𝑏))
 func GCD(xs ...int) int {
 	if len(xs) == 2 {
 		if xs[1] == 0 {
