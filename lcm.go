@@ -1,5 +1,6 @@
 package cplib
 
+// 最小公倍数 𝑂(log min(𝑎,𝑏))
 func LCM(xs ...int) int {
 	l := xs[0]
 	for _, x := range xs[1:] {
