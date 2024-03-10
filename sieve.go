@@ -1,7 +1,9 @@
 // Verify https://atcoder.jp/contests/abc177/tasks/abc177_e
 package cplib
 
-import "sort"
+import (
+	"sort"
+)
 
 type Sieve struct {
 	_minFactor []int

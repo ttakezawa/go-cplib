@@ -39,7 +39,7 @@ func Test_factorize(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Factorize(tt.args.n); !reflect.DeepEqual(got, tt.want) {
+			if got := FactorizePollardsRho(tt.args.n); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("factorize() = %v, want %v", got, tt.want)
 			}
 		})
