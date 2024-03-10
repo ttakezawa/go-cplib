@@ -8,7 +8,7 @@ import (
 )
 
 // 素因数分解 O(n⁽¹/⁴⁾)
-func factorize(n int) map[int]int {
+func Factorize(n int) map[int]int {
 	ret := make(map[int]int)
 	i := 2
 	rhoFlg := 0
@@ -28,11 +28,11 @@ func factorize(n int) map[int]int {
 		}
 		if i == 101 && n >= 1<<20 {
 			for n > 1 {
-				if is_prime(n) {
+				if IsPrime(n) {
 					ret[n], n = 1, 1
 				} else {
 					rhoFlg = 1
-					j := find_factor_rho(n)
+					j := _findFactorRho(n)
 					k := 0
 					for n%j == 0 {
 						n /= j
@@ -62,7 +62,7 @@ func factorize(n int) map[int]int {
 }
 
 // ミラーラビン素数判定 O(1)
-func is_prime(n int) bool {
+func IsPrime(n int) bool {
 	if n == 2 {
 		return true
 	}
@@ -79,12 +79,12 @@ func is_prime(n int) bool {
 		if a%n == 0 {
 			continue
 		}
-		t := powmod(a, d, n)
+		t := _powmod(a, d, n)
 		if t == 1 || t == n1 {
 			continue
 		}
 		for i := 0; i < s-1; i++ {
-			t = powmod(t, 2, n)
+			t = _powmod(t, 2, n)
 			if t == n1 {
 				break
 			}
@@ -97,11 +97,11 @@ func is_prime(n int) bool {
 }
 
 // b^e mod m O(log e)
-func powmod(b, e, m int) int {
+func _powmod(b, e, m int) int {
 	if e == 0 {
 		return 1
 	}
-	t := powmod(b, e/2, m)
+	t := _powmod(b, e/2, m)
 	t = int(NewUint128(uint64(t)).Mul64(uint64(t)).Mod64(uint64(m)))
 	if e%2 == 1 {
 		t = int(NewUint128(uint64(t)).Mul64(uint64(b)).Mod64(uint64(m)))
@@ -109,7 +109,7 @@ func powmod(b, e, m int) int {
 	return t
 }
 
-func find_factor_rho(n int) int {
+func _findFactorRho(n int) int {
 	m := 1 << (bits.Len(uint(n)) / 8)
 	for c := 1; c < 99; c++ {
 		f := func(x int) int {
@@ -146,12 +146,12 @@ func find_factor_rho(n int) int {
 			}
 		}
 		if g < n {
-			if is_prime(g) {
+			if IsPrime(g) {
 				return g
-			} else if is_prime(n / g) {
+			} else if IsPrime(n / g) {
 				return n / g
 			}
-			return find_factor_rho(g)
+			return _findFactorRho(g)
 		}
 	}
 	return -1

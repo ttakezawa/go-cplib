@@ -39,7 +39,7 @@ func Test_factorize(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := factorize(tt.args.n); !reflect.DeepEqual(got, tt.want) {
+			if got := Factorize(tt.args.n); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("factorize() = %v, want %v", got, tt.want)
 			}
 		})
@@ -73,7 +73,7 @@ func Test_is_prime(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := is_prime(tt.args.n); got != tt.want {
+			if got := IsPrime(tt.args.n); got != tt.want {
 				t.Errorf("is_prime() = %v, want %v", got, tt.want)
 			}
 		})
@@ -97,7 +97,7 @@ func Test_find_factor_rho(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := find_factor_rho(tt.args.n); got != tt.want {
+			if got := _findFactorRho(tt.args.n); got != tt.want {
 				t.Errorf("find_factor_rho() = %v, want %v", got, tt.want)
 			}
 		})
