@@ -7,8 +7,8 @@ import (
 	"sort"
 )
 
-// 素因数分解 O(n⁽¹/⁴⁾)
-func Factorize(n int) map[int]int {
+// ポラードのロー素因数分解法 O(n⁽¹/⁴⁾)
+func FactorizePollardsRho(n int) map[int]int {
 	ret := make(map[int]int)
 	i := 2
 	rhoFlg := 0
