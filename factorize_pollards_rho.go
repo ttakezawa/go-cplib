@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-// ポラードのロー素因数分解法 O(n⁽¹/⁴⁾)
+// ポラード・ロー素因数分解法 O(n⁽¹/⁴⁾)
 func FactorizePollardsRho(n int) map[int]int {
 	ret := make(map[int]int)
 	i := 2
